@@ -20,8 +20,10 @@ $(document).ready(function () {
             // Default listing sold count to 0
             var soldCount = 0;
 
+            var divText = listing.find('.hotness-signal').text().trim();
+
             // Get sold count as integer
-            soldCount = parseInt(listing.find('.hotness-signal').text()) || 0;
+            soldCount = divText.endsWith(' sold') ? (parseInt(divText) || 0) : 0;
 
             // Add item sold count and listing itself
             results.push({ sold: soldCount, listing: listing });
