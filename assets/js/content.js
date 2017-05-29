@@ -13,17 +13,25 @@ $(document).ready(function () {
         var results = [];
 
         // Traverse search results
-        $('li[listingid]:has(.hotness-signal)').each(function () {
+        $('li[listingid]'+(options.enableSortByPopularity.endsWith('-all') ? '' : ':has(.hotness-signal)')).each(function () {
             // Convert to jQuery object
             var listing = $(this);
 
-            if (listing.find('.hotness-signal:contains(" sold")').length) {
+            if (options.enableSortByPopularity.endsWith('-all') || listing.find('.hotness-signal:contains(" sold")').length) {
             if (options.enableSortByPopularity !== 'disable-sort') {
             // Default listing sold count to 0
             var soldCount = 0;
 
             // Get sold count as integer
-            soldCount = parseInt(listing.find('.hotness-signal:contains(" sold")').text()) || 0;
+            if (options.enableSortByPopularity === 'enable-sort-by-rating-all') {
+                soldCount = parseInt($(listing.find('.selrat')[0]).text().replace(/[(,)]/g, '')) || 0;
+                console.log(soldCount);
+            } else if (options.enableSortByPopularity === 'enable-sort-by-positive-all') {
+                soldCount = parseFloat($(listing.find('.selrat')[1]).text()) || 0;
+                console.log(soldCount);
+            } else {
+                soldCount = parseInt(listing.find('.hotness-signal:contains(" sold")').text()) || 0;
+            }
 
             if (options.enableSortByPopularity === 'enable-sort-by-price') {
                 var feeEl = listing.find('.fee');
