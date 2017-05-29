@@ -13,14 +13,14 @@ $(document).ready(function () {
         var results = [];
 
         // Traverse search results
-        $('li[listingid]').each(function () {
+        $('li[listingid]:has(.hotness-signal.red)').each(function () {
             // Convert to jQuery object
             var listing = $(this);
 
             // Default listing sold count to 0
             var soldCount = 0;
 			
-            var divText = listing.find('.hotness-signal').text().trim();
+            var divText = listing.find('.hotness-signal.red').text().trim();
 
             // Get sold count as integer
             soldCount = divText.endsWith(' sold') ? (parseInt(divText) || 0) : 0;
@@ -40,13 +40,13 @@ $(document).ready(function () {
         // Get search results parent list
         var ul = $('ul#ListViewInner');
 
-        // Warn the user about the modified result order
-        ul.append('<li>These search results have been modified by <b>eBay™ Popularity Sort</b>.</li>');
-        ul.append('<li><hr /></li>');
-
         // Re-add the sorted results
-        results.forEach(function (item) {
-            ul.append(item.listing);
-        });
+        ul.prepend(results.map(function(item){
+            return item.listing;
+        }));
+
+        // Warn the user about the modified result order
+        ul.prepend('<li><hr /></li>');
+        ul.prepend('<li>These search results have been modified by <b>eBay™ Popularity Sort</b>.</li>');
     });
 });
