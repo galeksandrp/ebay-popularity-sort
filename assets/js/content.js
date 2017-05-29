@@ -3,6 +3,7 @@ $(document).ready(function () {
     // Get on/off toggle value for this feature
     chrome.storage.sync.get({
         enableSortByPopularity: true,
+        disableSort: false,
         enableSortByPrice: false
     }, function (options) {
         // Check whether this feature is disabled
@@ -19,6 +20,7 @@ $(document).ready(function () {
             var listing = $(this);
 
             if (listing.find('.hotness-signal:contains(" sold")').length) {
+            if (!options.disableSort) {
             // Default listing sold count to 0
             var soldCount = 0;
 
@@ -32,7 +34,7 @@ $(document).ready(function () {
 
                 listing.find('.lvprice.prc .bold').after('<div class="cmpat">Avg: '+soldCount+'</div>');
             }
-
+            }
             // Add item sold count and listing itself
             results.push({ sold: soldCount, listing: listing });
 
@@ -48,7 +50,7 @@ $(document).ready(function () {
         if (options.enableSortByPrice) sortFunc = function (a, b) {
             return a.sold - b.sold;
         };
-        results.sort(sortFunc);
+        if (!options.disableSort) results.sort(sortFunc);
 
         // Get search results parent list
         var ul = $('ul#ListViewInner');
