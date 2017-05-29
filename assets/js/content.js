@@ -39,6 +39,10 @@ $(document).ready(function () {
                 soldCount = (parseFloat(listing.find('.lvprice.prc .bold').text().replace(',', ''))+(feeEl.length ? parseFloat(listing.find('.fee').text().replace(',', '')) : 0))/soldCount || 0;
 
                 listing.find('.lvprice.prc .bold').after('<div class="cmpat">Avg: '+soldCount+'</div>');
+            } else if (options.enableSortByPopularity === 'enable-sort-by-average-all') {
+                soldCount = parseInt($(listing.find('.selrat')[0]).text().replace(/[(,)]/g, ''))*(parseFloat($(listing.find('.selrat')[1]).text())/100) || 0;
+
+                listing.find('.lvprice.prc .bold').after('<div class="cmpat">Avg: '+soldCount+'</div>');
             }
             }
             // Add item sold count and listing itself
