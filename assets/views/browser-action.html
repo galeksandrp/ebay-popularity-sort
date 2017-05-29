@@ -107,6 +107,10 @@
             position: absolute;
             right: 10px;
         }
+
+        .hidden {
+            display: none;
+        }
     </style>
 
     <script type="text/javascript" src="../js/jquery.js"></script>
@@ -129,7 +133,7 @@
                     sort results by number of times sold
                 </div>
                 <div class="toggle">
-                    <input type="checkbox" id="enable-sort-by-popularity"/>
+                    <input type="radio" name="choice" value="enable-sort-by-popularity" id="enable-sort-by-popularity"/>
                     <label for="enable-sort-by-popularity"></label>
                 </div>
             </div>
@@ -141,7 +145,7 @@
                     move results with sales to top without sort
                 </div>
                 <div class="toggle">
-                    <input type="checkbox" id="disable-sort"/>
+                    <input type="radio" name="choice" value="disable-sort" id="disable-sort"/>
                     <label for="disable-sort"></label>
                 </div>
             </div>
@@ -153,7 +157,7 @@
                     sort results by average of price and times sold
                 </div>
                 <div class="toggle">
-                    <input type="checkbox" id="enable-sort-by-price"/>
+                    <input type="radio" name="choice" value="enable-sort-by-price" id="enable-sort-by-price"/>
                     <label for="enable-sort-by-price"></label>
                 </div>
             </div>

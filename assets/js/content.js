@@ -2,9 +2,7 @@
 $(document).ready(function () {
     // Get on/off toggle value for this feature
     chrome.storage.sync.get({
-        enableSortByPopularity: true,
-        disableSort: false,
-        enableSortByPrice: false
+        enableSortByPopularity: 'enable-sort-by-popularity'
     }, function (options) {
         // Check whether this feature is disabled
         if (!options.enableSortByPopularity) {
@@ -20,14 +18,14 @@ $(document).ready(function () {
             var listing = $(this);
 
             if (listing.find('.hotness-signal:contains(" sold")').length) {
-            if (!options.disableSort) {
+            if (options.enableSortByPopularity !== 'disable-sort') {
             // Default listing sold count to 0
             var soldCount = 0;
 
             // Get sold count as integer
             soldCount = parseInt(listing.find('.hotness-signal:contains(" sold")').text()) || 0;
 
-            if (options.enableSortByPrice) {
+            if (options.enableSortByPopularity === 'enable-sort-by-price') {
                 var feeEl = listing.find('.fee');
 
                 soldCount = (parseFloat(listing.find('.lvprice.prc .bold').text().replace(',', ''))+(feeEl.length ? parseFloat(listing.find('.fee').text().replace(',', '')) : 0))/soldCount || 0;
@@ -47,10 +45,10 @@ $(document).ready(function () {
         var sortFunc = function (a, b) {
             return b.sold - a.sold;
         };
-        if (options.enableSortByPrice) sortFunc = function (a, b) {
+        if (options.enableSortByPopularity === 'enable-sort-by-price') sortFunc = function (a, b) {
             return a.sold - b.sold;
         };
-        if (!options.disableSort) results.sort(sortFunc);
+        if (options.enableSortByPopularity !== 'disable-sort') results.sort(sortFunc);
 
         // Get search results parent list
         var ul = $('ul#ListViewInner');

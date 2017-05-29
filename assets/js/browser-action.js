@@ -1,34 +1,29 @@
 $(function () {
     // Get initial stored toggle value
     chrome.storage.sync.get({
-        enableSortByPopularity: true,
-        disableSort: false,
-        enableSortByPrice: false
+        enableSortByPopularity: 'enable-sort-by-popularity'
     }, function(items) {
         // Set checkbox checked value based on stored toggle value
-        $('#enable-sort-by-popularity').prop('checked', items.enableSortByPopularity);
-        $('#disable-sort').prop('checked', items.disableSort);
-        $('#enable-sort-by-price').prop('checked', items.enableSortByPrice);
+        $('#'+items.enableSortByPopularity).prop('checked', true);
+        $('#'+items.enableSortByPopularity).prop('wasChecked', true);
     });
 
-    $('#enable-sort-by-popularity').change(function(){
+    $('[name="choice"]').change(function(){
         // Update stored toggle value using checkbox checked property
         chrome.storage.sync.set({
-            enableSortByPopularity: $('#enable-sort-by-popularity').prop('checked')
+            enableSortByPopularity: $('[name="choice"]:checked').val()
         });
     });
 
-    $('#disable-sort').change(function(){
-        // Update stored toggle value using checkbox checked property
-        chrome.storage.sync.set({
-            disableSort: $('#disable-sort').prop('checked')
-        });
-    });
-
-    $('#enable-sort-by-price').change(function(){
-        // Update stored toggle value using checkbox checked property
-        chrome.storage.sync.set({
-            enableSortByPrice: $('#enable-sort-by-price').prop('checked')
-        });
+    $('[name="choice"]').click(function(){
+        if ($(this).prop('wasChecked')) {
+        	$(this).prop('wasChecked', false);
+        	chrome.storage.sync.set({
+                enableSortByPopularity: false
+            });
+        	$(this).prop('checked', false);
+        } else {
+            $(this).prop('wasChecked', true);
+        }
     });
 });
