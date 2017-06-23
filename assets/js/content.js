@@ -2,7 +2,8 @@
 $(document).ready(function () {
     // Get on/off toggle value for this feature
     chrome.storage.sync.get({
-        enableSortByPopularity: 'enable-sort-by-popularity'
+        enableSortByPopularity: 'enable-sort-by-popularity',
+        splitByQuantity: true
     }, function (options) {
         // Check whether this feature is disabled
         if (!options.enableSortByPopularity) {
@@ -25,10 +26,8 @@ $(document).ready(function () {
             // Get sold count as integer
             if (options.enableSortByPopularity === 'enable-sort-by-rating-all') {
                 soldCount = parseInt($(listing.find('.selrat')[0]).text().replace(/[(,)]/g, '')) || 0;
-                console.log(soldCount);
             } else if (options.enableSortByPopularity === 'enable-sort-by-positive-all') {
                 soldCount = parseFloat($(listing.find('.selrat')[1]).text()) || 0;
-                console.log(soldCount);
             } else {
                 soldCount = parseInt(listing.find('.hotness-signal:contains(" sold")').text()) || 0;
             }
@@ -36,7 +35,9 @@ $(document).ready(function () {
             if (options.enableSortByPopularity === 'enable-sort-by-price') {
                 var feeEl = listing.find('.fee');
 
-                soldCount = (parseFloat(listing.find('.lvprice.prc .bold').text().replace(',', ''))+(feeEl.length ? parseFloat(listing.find('.fee').text().replace(',', '')) : 0))/soldCount || 0;
+                var price = options.splitByQuantity ? (listing.find('.lvtitle').text().match(/(?: |^)[0-9]+x/i) ? parseFloat(listing.find('.lvprice.prc .bold').text().replace(',', ''))/listing.find('.lvtitle').text().match(/(?: |^)([0-9]+)x/i)[1] : parseFloat(listing.find('.lvprice.prc .bold').text().replace(',', ''))) : (parseFloat(listing.find('.lvprice.prc .bold').text().replace(',', '')));
+
+                soldCount = (price+(feeEl.length ? parseFloat(listing.find('.fee').text().replace(',', '')) : 0))/soldCount || 0;
 
                 listing.find('.lvprice.prc .bold').after('<div class="cmpat">Avg: '+soldCount+'</div>');
             } else if (options.enableSortByPopularity === 'enable-sort-by-average-all') {

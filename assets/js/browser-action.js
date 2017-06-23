@@ -1,11 +1,13 @@
 $(function () {
     // Get initial stored toggle value
     chrome.storage.sync.get({
-        enableSortByPopularity: 'enable-sort-by-popularity'
+        enableSortByPopularity: 'enable-sort-by-popularity',
+        splitByQuantity: true
     }, function(items) {
         // Set checkbox checked value based on stored toggle value
         $('#'+items.enableSortByPopularity).prop('checked', true);
         $('#'+items.enableSortByPopularity).prop('wasChecked', true);
+        $('#split-by-quantity').prop('checked', items.splitByQuantity);
     });
 
     $('[name="choice"]').change(function(){
@@ -25,5 +27,12 @@ $(function () {
         } else {
             $(this).prop('wasChecked', true);
         }
+    });
+
+    $('#split-by-quantity').change(function(){
+        // Update stored toggle value using checkbox checked property
+        chrome.storage.sync.set({
+            splitByQuantity: $('#split-by-quantity').prop('checked')
+        });
     });
 });
