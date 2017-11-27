@@ -18,7 +18,7 @@ $(document).ready(function () {
             // Convert to jQuery object
             var listing = $(this);
 
-            if (options.enableSortByPopularity.endsWith('-all') || listing.find('.hotness-signal:contains(" sold")').length) {
+            if (options.enableSortByPopularity.endsWith('-all') || listing.find('.hotness-signal:contains(" Sold")').length) {
             if (options.enableSortByPopularity !== 'disable-sort') {
             // Default listing sold count to 0
             var soldCount = 0;
@@ -29,7 +29,7 @@ $(document).ready(function () {
             } else if (options.enableSortByPopularity === 'enable-sort-by-positive-all') {
                 soldCount = parseFloat($(listing.find('.selrat')[1]).text()) || 0;
             } else {
-                soldCount = parseInt(listing.find('.hotness-signal:contains(" sold")').text()) || 0;
+                soldCount = parseInt(listing.find('.hotness-signal:contains(" Sold")').text()) || 0;
             }
 
             if (options.enableSortByPopularity === 'enable-sort-by-price') {
